@@ -1,5 +1,8 @@
 {
-  "name": "indecision-app",
+  "name": "expensify-app",
+  "jest": {
+    "verbose": true
+  },
   "version": "1.0.0",
   "main": "index.js",
   "author": "Nico",
@@ -7,17 +10,17 @@
   "scripts": {
     "serve": "live-server public/",
     "build": "webpack",
-    "dev-server": "webpack-dev-server"
+    "dev-server": "webpack-dev-server",
+    "test": "jest"
   },
   "dependencies": {
+    "@babel/preset-react": "^7.8.3",
     "@babel/runtime": "^7.8.4",
     "babel-cli": "6.24.1",
     "babel-core": "6.25.0",
     "babel-loader": "7.1.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.5.2",
-    "babel-preset-react": "6.24.1",
     "css-loader": "^3.4.2",
     "live-server": "^1.2.1",
     "modern-normalize": "^0.6.0",
@@ -40,5 +43,11 @@
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.8.6",
+    "@babel/preset-env": "^7.8.6",
+    "babel-jest": "^25.1.0",
+    "jest": "^25.1.0"
   }
 }

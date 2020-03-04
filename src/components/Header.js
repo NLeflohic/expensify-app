@@ -15,11 +15,11 @@ const Header = () => (
           Add expanse
         </NavLink>
       </li>
-      <li>
-        <NavLink to="/edit" activeClassName="is-active">
+      {/* <li>
+        <NavLink to="/edit/:id" activeClassName="is-active">
           Edit expanse
         </NavLink>
-      </li>
+      </li> */}
       <li>
         <NavLink to="/help" activeClassName="is-active">
           Help

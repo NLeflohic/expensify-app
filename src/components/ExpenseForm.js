@@ -9,12 +9,25 @@ const now = moment();
 console.log(now.format("DD MMMM YYYY"));
 
 export default class ExpenseForm extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      description: props.expense ? props.expense.description : "",
+      note: props.expense ? props.expense.note : "",
+      amount: props.expense ? (props.expense.amount / 100).toString() : "",
+      createdAt: props.expense ? moment(props.expense.createdAt) : moment(),
+      calendarFocused: false,
+      error: ""
+    };
+  }
   state = {
     description: "",
     note: "",
     amount: "",
-    createAt: moment(),
-    calenderFocused: false
+    createdAt: moment(),
+    calendarFocused: false,
+    error: ""
   };
   onDescriptionChange = e => {
     const description = e.target.value;
@@ -28,49 +41,75 @@ export default class ExpenseForm extends React.Component {
 
   onAmountChange = e => {
     const amount = e.target.value;
-    if (amount.match(/^\d*(\.\d{0,2})?$/)) {
+    if (!amount || amount.match(/^\d{1,}(\.\d{0,2})?$/)) {
       this.setState(() => ({ amount }));
     }
   };
 
-  onDateChanged = () => {
-    this.setState(() => ({ createAt }));
+  onDateChanged = createdAt => {
+    if (createdAt) {
+      this.setState(() => ({ createdAt }));
+    }
   };
 
   onFocusChanged = ({ focused }) => {
-    this.setState(() => ({ calenderFocused: focused }));
+    this.setState(() => ({ calendarFocused: focused }));
+  };
+
+  onSubmit = e => {
+    e.preventDefault();
+    let error = "";
+    if (!this.state.description || !this.state.amount) {
+      error = "Please provide description and amount";
+    } else {
+      console.log("submited");
+    }
+    this.setState(() => ({ error }));
+    this.props.onSubmit({
+      description: this.state.description,
+      amount: parseFloat(this.state.amount, 10) * 100,
+      createdAt: this.state.createdAt.valueOf(),
+      note: this.state.note
+    });
   };
 
   render() {
     return (
       <div>
-        <input
-          type="text"
-          placeholder="Description"
-          autoFocus
-          value={this.state.description}
-          onChange={this.onDescriptionChange}
-        />
-        <input
-          type="text"
-          placeholder="Amount"
-          value={this.state.amount}
-          onChange={this.onAmountChange}
-        />
-        <SingleDatePicker
-          date={this.state.createAt} // momentPropTypes.momentObj or null
-          onDateChange={this.onDateChanged} // PropTypes.func.isRequired
-          focused={this.state.calenderFocused} // PropTypes.bool
-          onFocusChange={this.onFocusChanged} // PropTypes.func.isRequired
-          id="cal" // PropTypes.string.isRequired,
-        />
+        <form onSubmit={this.onSubmit}>
+          <input
+            type="text"
+            placeholder="Description"
+            autoFocus
+            value={this.state.description}
+            onChange={this.onDescriptionChange}
+          />
+          <input
+            type="text"
+            placeholder="Amount"
+            value={this.state.amount}
+            onChange={this.onAmountChange}
+          />
+          <SingleDatePicker
+            date={this.state.createdAt} // momentPropTypes.momentObj or null
+            onDateChange={this.onDateChanged} // PropTypes.func.isRequired
+            focused={this.state.calendarFocused} // PropTypes.bool
+            onFocusChange={this.onFocusChanged} // PropTypes.func.isRequired
+            id="cal" // PropTypes.string.isRequired,
+            numberOfMonths={1}
+            isOutsideRange={() => false}
+            readOnly
+            showDefaultInputIcon
+          />
 
-        <textarea
-          placeholder="Add note for your expense (Optionnal)"
-          value={this.state.note}
-          onChange={this.onNoteChange}
-        />
-        <button>Add expense</button>
+          <textarea
+            placeholder="Add note for your expense (Optionnal)"
+            value={this.state.note}
+            onChange={this.onNoteChange}
+          />
+          <button>Add expense</button>
+        </form>
+        <p>{this.state.error}</p>
       </div>
     );
   }
