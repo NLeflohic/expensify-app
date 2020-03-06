@@ -2,11 +2,9 @@ import React from "react";
 import moment from "moment";
 import "react-dates/initialize";
 import { SingleDatePicker } from "react-dates";
-import "react-dates/lib/css/_datepicker.css";
 
-moment.locale("fr");
-const now = moment();
-console.log(now.format("DD MMMM YYYY"));
+// const now = moment();
+// console.log(now.format("DD MMMM YYYY"));
 
 export default class ExpenseForm extends React.Component {
   constructor(props) {
@@ -61,16 +59,19 @@ export default class ExpenseForm extends React.Component {
     let error = "";
     if (!this.state.description || !this.state.amount) {
       error = "Please provide description and amount";
+      this.setState(() => ({ error }));
     } else {
+      error = "";
       console.log("submited");
+      // }
+      this.setState(() => ({ error }));
+      this.props.onSubmit({
+        description: this.state.description,
+        amount: parseFloat(this.state.amount, 10) * 100,
+        createdAt: this.state.createdAt.valueOf(),
+        note: this.state.note
+      });
     }
-    this.setState(() => ({ error }));
-    this.props.onSubmit({
-      description: this.state.description,
-      amount: parseFloat(this.state.amount, 10) * 100,
-      createdAt: this.state.createdAt.valueOf(),
-      note: this.state.note
-    });
   };
 
   render() {
@@ -91,6 +92,7 @@ export default class ExpenseForm extends React.Component {
             onChange={this.onAmountChange}
           />
           <SingleDatePicker
+            id="sdp"
             date={this.state.createdAt} // momentPropTypes.momentObj or null
             onDateChange={this.onDateChanged} // PropTypes.func.isRequired
             focused={this.state.calendarFocused} // PropTypes.bool
