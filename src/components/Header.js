@@ -1,9 +1,11 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import ExpenseTotal from "./ExpenseTotal";
 
 const Header = () => (
   <header>
     <h1>Expensify</h1>
+    <ExpenseTotal />
     <ul>
       <li>
         <NavLink to="/" activeClassName="is-active" exact={true}>
