@@ -1,11 +1,6 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CSSExtract = new MiniCssExtractPlugin({ filename: "styles.css" });
-// const CSSExtract = new ExtractTextPlugin({"styles.css"});
-// const CSSExtract = new ExtractTextPlugin({
-//   filename: "[name].css",
-//   chunkFilename: "[id].css"
-// });
 
 module.exports = env => {
   const isProduction = env === "production";
@@ -13,7 +8,7 @@ module.exports = env => {
   return {
     entry: "./src/app.js",
     output: {
-      path: path.join(__dirname, "public"),
+      path: path.join(__dirname, "public", "dist"),
       filename: "bundle.js"
     },
     module: {
@@ -43,19 +38,12 @@ module.exports = env => {
         }
       ]
     },
-    plugins: [
-      CSSExtract
-      // new MiniCssExtractPlugin({
-      //   // Options similar to the same options in webpackOptions.output
-      //   // both options are optional
-      //   filename: "[name].css",
-      //   chunkFilename: "[id].css"
-      // })
-    ],
+    plugins: [CSSExtract],
     devtool: isProduction ? "source-map" : "inline-source-map",
     devServer: {
       contentBase: path.join(__dirname, "public"),
-      historyApiFallback: true
+      historyApiFallback: true,
+      publicPath: "/dist/"
     }
   };
 };
