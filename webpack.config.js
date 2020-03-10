@@ -1,5 +1,6 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CSSExtract = new MiniCssExtractPlugin({ filename: "styles.css" });
 // const CSSExtract = new ExtractTextPlugin({"styles.css"});
 // const CSSExtract = new ExtractTextPlugin({
 //   filename: "[name].css",
@@ -43,12 +44,13 @@ module.exports = env => {
       ]
     },
     plugins: [
-      new MiniCssExtractPlugin({
-        // Options similar to the same options in webpackOptions.output
-        // both options are optional
-        filename: "[name].css",
-        chunkFilename: "[id].css"
-      })
+      CSSExtract
+      // new MiniCssExtractPlugin({
+      //   // Options similar to the same options in webpackOptions.output
+      //   // both options are optional
+      //   filename: "[name].css",
+      //   chunkFilename: "[id].css"
+      // })
     ],
     devtool: isProduction ? "source-map" : "inline-source-map",
     devServer: {
