@@ -14,12 +14,11 @@ exports[`Should render ExpenseTotal correctly without expenses 2`] = `
 <div>
   <p>
     <span>
-      Total of 
-      $4.44
-       for
-       
+      Viewing 
       1
-       expense(s)
+       expense(s) totalling
+       
+      $4.44
     </span>
   </p>
 </div>

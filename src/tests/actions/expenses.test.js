@@ -1,4 +1,3 @@
-import { v4 as uuid4 } from "uuid";
 import { addExpense, editExpense, removeExpense } from "../../actions/expenses";
 
 test("Should setup remove expense action object", () => {
