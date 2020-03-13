@@ -1,21 +1,9 @@
-import { v4 as uuid4 } from "uuid";
 import database from "../firebase/firebase";
 
 //Add expense
-export const addExpense = ({
-  description = "",
-  note = "",
-  amount = 0,
-  createdAt = 0
-} = {}) => ({
+export const addExpense = expense => ({
   type: "ADD_EXPENSE",
-  expense: {
-    id: uuid4(),
-    description,
-    note,
-    amount,
-    createdAt
-  }
+  expense
 });
 
 export const startAddExpense = (expenseData = {}) => {
@@ -27,13 +15,13 @@ export const startAddExpense = (expenseData = {}) => {
       createdAt = 0
     } = expenseData;
     const expense = { description, note, amount, createdAt };
-    database
+    return database
       .ref("expenses")
       .push(expense)
-      .then(() => {
+      .then(ref => {
         dispatch(
           addExpense({
-            id: expense.key,
+            id: ref.key,
             ...expense
           })
         );
@@ -53,3 +41,27 @@ export const editExpense = (id, updates) => ({
   id,
   updates
 });
+
+// SET_EXPENSES
+export const setExpenses = expenses => ({
+  type: "SET_EXPENSES",
+  expenses
+});
+
+export const startSetExpenses = () => {
+  return dispatch => {
+    return database
+      .ref("expenses")
+      .once("value")
+      .then(snapshot => {
+        const arr = [];
+        snapshot.forEach(snap => {
+          arr.push({
+            id: snap.key,
+            ...snap.val()
+          });
+        });
+        dispatch(setExpenses(arr));
+      });
+  };
+};

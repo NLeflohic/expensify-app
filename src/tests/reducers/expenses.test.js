@@ -1,6 +1,16 @@
 import expensesReducer from "../../reducers/expenses";
 import expenses from "../fixtures/expenses";
-import moment from "moment";
+import database from "../../firebase/firebase";
+
+beforeAll(done => {
+  database.goOnline();
+  done();
+});
+
+afterAll(done => {
+  database.goOffline();
+  done();
+});
 
 test("Should set default state", () => {
   const state = expensesReducer(undefined, { type: "@@INIT" });
@@ -62,4 +72,14 @@ test("Should not edit expense by id not found", () => {
   };
   const state = expensesReducer(expenses, action);
   expect(state).toEqual(expenses);
+});
+
+test("Should set expenses", () => {
+  const action = {
+    type: "SET_EXPENSES",
+    expenses: [expenses[1]]
+  };
+
+  const state = expensesReducer(expenses, action);
+  expect(state).toEqual([expenses[1]]);
 });
