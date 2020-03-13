@@ -29,12 +29,6 @@ export const startAddExpense = (expenseData = {}) => {
   };
 };
 
-//Remove expense
-export const removeExpense = ({ id } = {}) => ({
-  type: "REMOVE_EXPENSE",
-  id
-});
-
 //Edit expanse
 export const editExpense = (id, updates) => ({
   type: "EDIT_EXPENSE",
@@ -65,3 +59,30 @@ export const startSetExpenses = () => {
       });
   };
 };
+
+//Remove expense
+export const removeExpense = ({ id } = {}) => ({
+  type: "REMOVE_EXPENSE",
+  id
+});
+
+export const startRemoveExpense = ({ id } = {}) => {
+  return dispatch => {
+    return database
+      .ref(`expenses/${id}`)
+      .remove()
+      .then(() => {
+        dispatch(removeExpense({ id }));
+      });
+  };
+};
+
+// database
+//   .ref("isSingle")
+//   .remove()
+//   .then(() => {
+//     console.log("Successfully removed");
+//   })
+//   .catch(error => {
+//     console.log("Error while removing, ", error);
+//   });
