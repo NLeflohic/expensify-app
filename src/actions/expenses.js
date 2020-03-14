@@ -77,12 +77,13 @@ export const startRemoveExpense = ({ id } = {}) => {
   };
 };
 
-// database
-//   .ref("isSingle")
-//   .remove()
-//   .then(() => {
-//     console.log("Successfully removed");
-//   })
-//   .catch(error => {
-//     console.log("Error while removing, ", error);
-//   });
+export const startEditExpense = (id, updates) => {
+  return dispatch => {
+    return database
+      .ref(`expenses/${id}`)
+      .update(updates)
+      .then(() => {
+        dispatch(editExpense(id, updates));
+      });
+  };
+};

@@ -4,6 +4,7 @@ import {
   editExpense,
   removeExpense,
   setExpenses,
+  startEditExpense,
   startSetExpenses,
   startRemoveExpense
 } from "../../actions/expenses";
@@ -91,13 +92,38 @@ test("Should add expense to database and store", done => {
   });
 });
 
-test("Should add expense with defaults to database and store", () => {});
-
 test("Should set expenses", () => {
   const action = setExpenses(expenses);
   expect(action).toEqual({
     type: "SET_EXPENSES",
     expenses
+  });
+});
+
+test("Should update expense and store to databasse", done => {
+  const store = createMockStore({});
+  const updates = expenses[1];
+  updates.description = "Description test";
+  store.dispatch(startEditExpense(updates.id, updates)).then(() => {
+    const actions = store.getActions();
+    expect(actions[0]).toEqual({
+      type: "EDIT_EXPENSE",
+      id: updates.id,
+      updates: {
+        id: expect.any(String),
+        ...updates
+      }
+    });
+
+    database
+      .ref(`expenses/${actions[0].updates.id}`)
+      .once("value")
+      .then(snapshot => {
+        const exp = snapshot.val();
+        exp.id = actions[0].updates.id;
+        expect(snapshot.val()).toEqual(updates);
+        done();
+      });
   });
 });
 
