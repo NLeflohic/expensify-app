@@ -8,18 +8,12 @@ export const Header = props => (
   <header>
     <h1>Expensify</h1>
     <ExpenseTotal />
-    <ul>
-      <li>
-        <NavLink to="/dashboard" activeClassName="is-active">
-          Dashboard
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/create" activeClassName="is-active">
-          Add expanse
-        </NavLink>
-      </li>
-    </ul>
+    <NavLink to="/dashboard" activeClassName="is-active">
+      Dashboard
+    </NavLink>
+    <NavLink to="/create" activeClassName="is-active">
+      Add expanse
+    </NavLink>
     <button onClick={props.startLogout}>Logout</button>
   </header>
 );
