@@ -1,29 +1,40 @@
 import React from "react";
 import { connect } from "react-redux";
-import getSumExpenses from "../selectors/expensesTotal";
-import selectExpenses from "../selectors/expenses";
+import { Link } from "react-router-dom";
 import numeral from "numeral";
+import selectExpenses from "../selectors/expenses";
+import selectExpensesTotal from "../selectors/expensesTotal";
 
-export const ExpenseTotal = props => {
+export const ExpenseTotal = ({ expenseCount, expensesTotal }) => {
+  const expenseWord = expenseCount === 1 ? "expense" : "expenses";
+  const formattedExpensesTotal = numeral(expensesTotal / 100).format("0,0.00");
+
   return (
-    <div>
-      <p>
-        {props.expensesCount > 0 ? (
+    <div className="page-header">
+      <div className="content-container">
+        <h1 className="page-header__title">
+          Viewing <span>{expenseCount}</span> {expenseWord} totalling{" "}
           <span>
-            Viewing {props.expensesCount} expense(s) totalling{" "}
-            {numeral(props.expensesSum / 100).format("$0,00.00")}
+            {formattedExpensesTotal}
+            {" €"}
           </span>
-        ) : (
-          <span>No Expenses</span>
-        )}
-      </p>
+        </h1>
+        <div className="page-header__action">
+          <Link className="button" to="/create">
+            Add expense
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };
 
-const mapStateToProps = state => ({
-  expensesSum: getSumExpenses(state.expenses),
-  expensesCount: selectExpenses(state.expenses, state.filters).length
-});
+const mapStateToProps = state => {
+  const visibleExpenses = selectExpenses(state.expenses, state.filters);
+  return {
+    expenseCount: visibleExpenses.length,
+    expensesTotal: selectExpensesTotal(visibleExpenses)
+  };
+};
 
 export default connect(mapStateToProps)(ExpenseTotal);

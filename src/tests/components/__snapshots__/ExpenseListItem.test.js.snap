@@ -1,19 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Should generate ExpenseListItem from item 1`] = `
-<div>
-  <Link
-    to="/edit/2"
-  >
-    <h3>
+<Link
+  className="list-item"
+  to="/edit/2"
+>
+  <div>
+    <h3
+      className="list-item__title"
+    >
       Rent
     </h3>
-  </Link>
-  <p>
-    $1,950.00
-     -
-     
-    28th December, 1969
-  </p>
-</div>
+    <span
+      className="list-item__sub-title"
+    >
+      28th December, 1969
+    </span>
+  </div>
+  <h3
+    className="list-item__data"
+  >
+    1,950.00
+     €
+  </h3>
+</Link>
 `;
