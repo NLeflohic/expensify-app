@@ -37,7 +37,7 @@
     "minimist": "1.2.2",
     "modern-normalize": "^0.6.0",
     "moment": "^2.27.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "normalize-css": "^2.3.1",
     "numeral": "^2.0.6",
     "raf": "^3.4.1",
